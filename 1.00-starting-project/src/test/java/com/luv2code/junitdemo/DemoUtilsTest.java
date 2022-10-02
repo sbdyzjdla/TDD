@@ -2,10 +2,15 @@ package com.luv2code.junitdemo;
 
 import org.junit.jupiter.api.*;
 
+import java.time.Duration;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+//@TestMethodOrder(MethodOrderer.MethodName.class)
+//@TestMethodOrder(MethodOrderer.DisplayName.class)
+//@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestMethodOrder(MethodOrderer.Random.class)
 class DemoUtilsTest {
 
     DemoUtils demoUtils;
@@ -41,6 +46,7 @@ class DemoUtilsTest {
         assertNotEquals(6, demoUtils.add(1,9), " 1+9는 반드시 6이 아니다");
     }
 
+//    @Order(1)
     @Test
     @DisplayName("Null and Not Null")
     void testNullAndNotNull() {
@@ -93,6 +99,20 @@ class DemoUtilsTest {
     void testLineMatch() {
         List<String> theList = List.of("luv", "2", "code");
         assertLinesMatch(theList, demoUtils.getAcademyInList());
+    }
+
+    @Test
+    @DisplayName("Throws and Does Not Throw")
+    void testThrowsAndDoesNotThrow() {
+        assertThrows(Exception.class, () -> {demoUtils.throwException(-1);});
+        assertDoesNotThrow(() -> demoUtils.throwException(5));
+    }
+
+    @Test
+    @DisplayName("Timeout")
+    void testTimeOut() {
+        // 3초안에 실행되어야한다
+        assertTimeoutPreemptively(Duration.ofSeconds(3), () -> { demoUtils.checkTimeout();});
     }
 
 }
