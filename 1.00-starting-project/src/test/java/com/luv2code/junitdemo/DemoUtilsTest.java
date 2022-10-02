@@ -52,4 +52,23 @@ class DemoUtilsTest {
         assertNotNull(demoUtils.checkNull(str2), "Object should not be null");
     }
 
+    @Test
+    @DisplayName("Same and Not Same")
+    void testSameAndNotSame() {
+        String str = "luv2code";
+
+        assertSame(demoUtils.getAcademy(), demoUtils.getAcademyDuplicate(), "같은 객체여야 한다");
+        assertNotSame(str, demoUtils.getAcademy(), "같은 객체가 아니여야 한다");
+    }
+
+    @Test
+    @DisplayName("True and False")
+    void testTrueFalse() {
+        int gradeOne = 10;
+        int gradeTwo = 5;
+
+        assertTrue(demoUtils.isGreater(gradeOne, gradeTwo), "true를 반환 한다.");
+        assertFalse(demoUtils.isGreater(gradeTwo, gradeOne), "false를 반환한다.");
+    }
+
 }
