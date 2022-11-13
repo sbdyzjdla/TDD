@@ -27,3 +27,19 @@
 
 ## SpringBoot Test
 * SpringBoot 테스트시 테스트할 클래스와 동일한 패키지로 테스트 패키지를 만들던가 @SpringBootTest(classes = MvcTestingExampleApplication.class) 이처럼 테스트할 클래스를 명시해야한다.
+
+## MockitoTest
+일반적인 프로그램의 구조는 아래와같다
+mainApp <-> service <-> Dao <-> DB
+우리는 서비스를 최소한의 종속성으로 테스트 하고싶다
+Dao대신 Test Double Dao 사용, Test Double -> Mocking
+* Mocking 이점
+    * Class를 고립상태에서 테스트 할수있다
+    * 구성과, 의존성을 최소화한다
+* Mocking Framework중 왜 Mockito?
+    * springboot의 transitive dependency(어떤 아티팩트를 의존성으로 추가하면 그 아티팩트가 가지고있는 의존성도 딸려오는것, spring-boot-starter-test를 가져오면 Mockito도 같이 딸려 온다
+* Mockito
+    * @Mock
+    * @InjectMocks @Mock or @Spy로 선언된 Mock만 주입받음
+* service Unit Test
+    * DAO를 실행한 결과를 미리 Mocking(expectation)해 service 실행시 DAO를 직접 실행하지 않고 서비스를 테스트해볼수있다.
