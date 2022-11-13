@@ -9,10 +9,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = MvcTestingExampleApplication.class)
@@ -37,6 +39,9 @@ public class ApplicationExampleTest {
 
     @Autowired
     StudentGrades studentGrades;
+
+    @Autowired
+    ApplicationContext context;
 
     @BeforeEach
     public void beforeEach() {
@@ -84,5 +89,38 @@ public class ApplicationExampleTest {
     void checkNullForStudentGrades() {
         assertNotNull(studentGrades.checkNull(student.getStudentGrades().getMathGradeResults()),
                 "object should not be null");
+    }
+
+    @DisplayName("Create student without grade init")
+    @Test
+    void createStudentWithoutGradeInit() {
+        CollegeStudent studentTwo = context.getBean("collegeStudent",CollegeStudent.class);
+        // application context로 빈주입을 받는이유 :  CollegeStudent가 프로토타입이기 때문에에
+        studentTwo.setFirstname("Chad");
+        studentTwo.setLastname("Darby");
+        studentTwo.setEmailAddress("Chad.Darby@google.com");
+        assertNotNull(studentTwo.getFirstname());
+        assertNotNull(studentTwo.getLastname());
+        assertNotNull(studentTwo.getEmailAddress());
+        assertNull(studentGrades.checkNull(studentTwo.getStudentGrades()));
+    }
+
+    @DisplayName("Verify students are prototypes")
+    @Test
+    void verifyStudentsArePrototypes() {
+        CollegeStudent studentTwo = context.getBean("collegeStudent",CollegeStudent.class);
+        assertNotSame(student, studentTwo);
+        assertNotEquals(student.hashCode(), studentTwo.hashCode());
+    }
+
+    @DisplayName("Find Grade Point Average")
+    @Test
+    void findGradePointAverage() {
+        assertAll("Testing All assertEqauals",
+                () -> assertEquals(353.25, studentGrades.addGradeResultsForSingleClass(
+                        student.getStudentGrades().getMathGradeResults())),
+                () -> assertEquals(88.31, studentGrades.findGradePointAverage(
+                        student.getStudentGrades().getMathGradeResults()))
+        );
     }
 }
