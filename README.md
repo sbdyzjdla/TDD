@@ -40,6 +40,11 @@ Dao대신 Test Double Dao 사용, Test Double -> Mocking
     * springboot의 transitive dependency(어떤 아티팩트를 의존성으로 추가하면 그 아티팩트가 가지고있는 의존성도 딸려오는것, spring-boot-starter-test를 가져오면 Mockito도 같이 딸려 온다
 * Mockito
     * @Mock
-    * @InjectMocks @Mock or @Spy로 선언된 Mock만 주입받음
+    * @InjectMocks @Mock or @Spy로 선언된 Mock만 주입받음 (Mock의 종속성을 주입)
 * service Unit Test
     * DAO를 실행한 결과를 미리 Mocking(expectation)해 service 실행시 DAO를 직접 실행하지 않고 서비스를 테스트해볼수있다.
+* 테스트순서 
+    * setUp : Mock의 response를 예측하여 세팅
+    * Execute : 테스트 실행
+    * Assert : 결과가 맞는지 검증
+    * Verify : 
