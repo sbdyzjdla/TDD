@@ -41,10 +41,15 @@ Dao대신 Test Double Dao 사용, Test Double -> Mocking
 * Mockito
     * @Mock
     * @InjectMocks @Mock or @Spy로 선언된 Mock만 주입받음 (Mock의 종속성을 주입)
+* Springboot Test Mock
+    * Mock -> MockBean 
+        빈을 어플리케이션 컨텍스트에 등록
+    * InjectMocks -> Autowired
+        MockBean으로 빈을 어플리케이션 컨텍스트에 등록되었기에 Autowired 사용이 가능함
 * service Unit Test
     * DAO를 실행한 결과를 미리 Mocking(expectation)해 service 실행시 DAO를 직접 실행하지 않고 서비스를 테스트해볼수있다.
 * 테스트순서 
     * setUp : Mock의 response를 예측하여 세팅
     * Execute : 테스트 실행
     * Assert : 결과가 맞는지 검증
-    * Verify : 
+    * Verify : 해당 Mock의 메소드가 실제로 호출되었는지, 몇번 호출되었는지 검증
